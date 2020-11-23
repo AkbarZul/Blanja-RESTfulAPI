@@ -35,8 +35,8 @@ npm i mysql
 * localhost:1000/history
 
 3.PATCH //gunakan postman untuk test
-localhost:1000/product
+* localhost:1000/product
 
 4.DELETE //gunakan postman untuk test
-localhost:1000/products/delete/id
+* localhost:1000/products/delete/id
 

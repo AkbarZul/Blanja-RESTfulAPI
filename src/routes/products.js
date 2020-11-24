@@ -11,7 +11,23 @@ productsRouter.get("/", (req, res) => {
 
 
     const getAllProducts = new Promise((resolve, reject) => {
-        const queryString = "SELECT p.id, p.product_name, p.product_description, p.product_price, c.category_name, p.product_rating, p.product_size, p.product_color, p.product_total, p.product_condition, p.product_create, p.product_update FROM products AS p JOIN category AS c ON c.id = p.category_id ORDER BY p.product_price ASC";
+        const queryString = "SELECT p.id, p.product_name, p.product_description, p.product_price, c.category_name, p.product_rating, p.product_size, p.product_color, p.product_total, p.product_condition, p.product_create, p.product_update FROM products AS p JOIN category AS c ON c.id = p.category_id";
+        if (req.query.name != null) {
+            queryString += "ORDER BY p.product_name"
+            if (req.query.name == 'desc') {
+                queryString += "DESC"
+            }
+        } else if (req.query.price != null) {
+            queryString += "ORDER BY p.product_price"
+            if (req.query.price == 'desc') {
+                queryString += "DESC"
+            }
+        } else if (req.query.date) {
+            queryString += "ORDER BY p.product_update"
+            if (req.query.date == 'desc') {
+                queryString += "DESC"
+            }
+        }
         db.query(queryString, (err, data) => {
             if (!err) {
                 resolve(data);

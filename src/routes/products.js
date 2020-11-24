@@ -9,25 +9,25 @@ const db = require('../configs/mySQL');
 //endpoint => /products
 productsRouter.get("/", (req, res) => {
 
+    const { sort, sortDesc } = req.query;
+    let order = "";
+    let desc = "";
+
+    if (sort == 1) {
+        order = " ORDER BY product_name"
+    } else if (sort == 2) {
+        order = " ORDER BY product_price"
+    } else if (sort == 3) {
+        order = " ORDER BY product_updated"
+    }
+    if (!order == "") {
+        if (sortDesc == 1) {
+            desc = " DESC"
+        }
+    }
 
     const getAllProducts = new Promise((resolve, reject) => {
-        const queryString = "SELECT p.id, p.product_name, p.product_description, p.product_price, c.category_name, p.product_rating, p.product_size, p.product_color, p.product_total, p.product_condition, p.product_create, p.product_update FROM products AS p JOIN category AS c ON c.id = p.category_id";
-        if (req.query.name != null) {
-            queryString += "ORDER BY p.product_name"
-            if (req.query.name == 'desc') {
-                queryString += "DESC"
-            }
-        } else if (req.query.price != null) {
-            queryString += "ORDER BY p.product_price"
-            if (req.query.price == 'desc') {
-                queryString += "DESC"
-            }
-        } else if (req.query.date) {
-            queryString += "ORDER BY p.product_update"
-            if (req.query.date == 'desc') {
-                queryString += "DESC"
-            }
-        }
+        const queryString = "SELECT p.id, p.product_name, p.product_description, p.product_price, c.category_name, p.product_rating, p.product_size, p.product_color, p.product_total, p.product_condition, p.product_create, p.product_update FROM products AS p JOIN category AS c ON c.id = p.category_id" + order + desc;
         db.query(queryString, (err, data) => {
             if (!err) {
                 resolve(data);

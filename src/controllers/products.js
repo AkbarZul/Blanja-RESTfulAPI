@@ -1,5 +1,7 @@
 const productsModel = require("../models/products");
 
+const form = require("../helpers/form");
+
 module.exports = {
     createProducts: (req, res) => {
         const { body } = req;
@@ -12,10 +14,10 @@ module.exports = {
                     id: data.insertId,
                     ...insertBody,
                 };
-                res.json(resProduct);
+                form.success(res, resProduct);
             })
             .catch((err) => {
-                res.json(err);
+                form.error(res, err);
             });
     },
 
@@ -38,21 +40,30 @@ module.exports = {
         }
 
         productsModel.readProducts(order, desc).then((data) => {
-            res.json(data);
+            form.success(res, data);
         }).catch((err) => {
-            res.json(err);
+            form.error(res, err);
         })
     },
 
     deleteProducts: (req, res) => {
         const { id } = req.params;
         productsModel.deleteProducts(id).then((data) => {
-            const deleteSuc = {
-                msg: "data has been successfully deleted"
+            if (data.affectedRows === 0) {
+                res.status(404).json({
+                    msg: "Data Not Found",
+                    status: 404,
+                });
+            } else {
+                const deleteSuc = {
+                    msg: "data has been successfully deleted",
+                    status: 200,
+                }
+                res.json(deleteSuc);
             }
-            res.json(deleteSuc);
+
         }).catch((err) => {
-            res.json(err);
+            form.error(res, err);
         })
     },
 

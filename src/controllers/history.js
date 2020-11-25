@@ -1,5 +1,7 @@
 const historyModel = require("../models/history");
 
+const form = require("../helpers/form");
+
 module.exports = {
     createHistory: (req, res) => {
         const { body } = req;
@@ -13,18 +15,18 @@ module.exports = {
                     id: data.insertId,
                     ...insertHistory,
                 };
-                res.json(resHistory);
+                form.success(res, resHistory);
             })
             .catch((err) => {
-                res.json(err);
+                form.error(res, err);
             });
     },
 
     readHistory: (req, res) => {
         historyModel.readHistory().then((data) => {
-            res.json(data);
+            form.success(res, data);
         }).catch((err) => {
-            res.json(err);
+            form.error(res, err);
         })
     }
 }

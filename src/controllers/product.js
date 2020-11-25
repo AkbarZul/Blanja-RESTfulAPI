@@ -1,13 +1,19 @@
 const productModel = require("../models/product");
 
+const form = require("../helpers/form");
 module.exports = {
     readSingleProduct: (req, res) => {
         productModel.readSingleProduct(req).then((data) => {
-            if (data.length) {
-                res.json(data);
+            if (!data.length) {
+                res.status(404).json({
+                    msg: "Data Not Found",
+                    status: 404,
+                });
+            } else {
+                form.success(res, data[0]);
             }
         }).catch((err) => {
-            res.json(err);
+            form.error(res, err);
         })
     },
 
@@ -21,14 +27,22 @@ module.exports = {
         const idBody = { id };
 
         productModel.updateSingleProduct(update, idBody).then((data) => {
-            const resUpdate = {
-                msg: "Update Success",
-                id: data.updateId,
-                ...update,
+            if (data.affectedRows === 0) {
+                res.status(404).json({
+                    msg: "Data Not Found",
+                    status: 404,
+                })
+            } else {
+                const resUpdate = {
+                    msg: "Update Success",
+                    id: data.updateId,
+                    ...update,
+                }
+                form.success(res, resUpdate);
             }
-            res.json(resUpdate);
+
         }).catch((err) => {
-            res.json(err);
+            form.error(res, err);
         })
     }
 

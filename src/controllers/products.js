@@ -31,7 +31,7 @@ module.exports = {
         } else if (sort == 2) {
             order = " ORDER BY product_price"
         } else if (sort == 3) {
-            order = " ORDER BY product_updated"
+            order = " ORDER BY product_update"
         }
         if (!order == "") {
             if (sortDesc == 1) {

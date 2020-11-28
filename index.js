@@ -9,6 +9,10 @@ const app = express()
 //test express
 const port = 1000;
 
+const cors = require("cors");
+
+app.use(cors());
+
 //sambung ke aplikasi express
 app.listen(port, () => {
     console.log(`server is running at port ${port}`)

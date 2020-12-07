@@ -20,13 +20,14 @@ module.exports = {
     updateSingleProduct: (req, res) => {
         const { id } = req.body;
         const { body } = req;
+        const level = req.decodeToken.level;
         const update = {
             ...body,
             product_update: new Date(Date.now()),
         };
         const idBody = { id };
 
-        productModel.updateSingleProduct(update, idBody).then((data) => {
+        productModel.updateSingleProduct(update, idBody, level).then((data) => {
             if (data.affectedRows === 0) {
                 res.status(404).json({
                     msg: "Data Not Found",

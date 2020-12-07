@@ -23,6 +23,11 @@ module.exports = {
 
     readProducts: (req, res) => {
         const { sort, sortDesc } = req.query;
+       const { query } = req;
+            const limit = Number(query.limit) || 5;
+            const page = Number(query.page) || 1;
+            const offset = (page - 1) * limit || 0;
+            
         let order = "";
         let desc = "";
 
@@ -39,8 +44,15 @@ module.exports = {
             }
         }
 
-        productsModel.readProducts(order, desc).then((data) => {
-            form.success(res, data);
+        productsModel.readProducts(order, desc, limit, offset, page).then((data) => {
+            if (Math.ceil(data.products / limit) == data.products) {
+                res.status(404).json({
+                  msg: "Page Not Found",
+                  status: 404,
+                });
+              } else {
+                form.success(res, data);
+              }
         }).catch((err) => {
             form.error(res, err);
         })

@@ -3,11 +3,19 @@ const mySql = require("mysql"); //database
 //menyambungkan database
 //object connection
 //setting db
+
+const {HOST, DB, USER, PASS} = process.env;
+
+console.log(HOST)
+console.log(DB)
+console.log(USER)
+console.log(PASS)
+
 const db = mySql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "blanja",
+    host: HOST,
+    user: USER,
+    password: PASS,
+    database: DB,
 });
 
 db.connect((err) => {

@@ -15,10 +15,16 @@ module.exports = {
         });
     },
 
-    updateSingleProduct: (update, idBody) => {
+    updateSingleProduct: (update, idBody, level) => {
         return new Promise((resolve, reject) => {
             const queryString = "UPDATE products SET ? WHERE ?";
-            db.query(queryString, [update, idBody], (err, data) => {
+            if (level > 1) {
+                reject({
+                    msg: "kamu bukan seller ngapain edit2 product ngaco",
+                    status: 401,
+                })
+            }
+            db.query(queryString, [update, idBody, level], (err, data) => {
                 if (!err) {
                     resolve(data);
                 } else {

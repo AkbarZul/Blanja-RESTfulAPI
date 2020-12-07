@@ -1,3 +1,4 @@
+const { query } = require("express");
 const db = require("../configs/mySQL");
 
 module.exports = {
@@ -14,12 +15,23 @@ module.exports = {
         });
     },
 
-    readProducts: (param1, param2) => {
+    readProducts: (param1, param2, limit, offset, page) => {
         return new Promise((resolve, reject) => {
-            const queryString = "SELECT p.id, p.product_name, p.product_description, p.product_price, c.category_name, p.product_rating, p.product_size, p.product_color, p.product_total, p.product_condition, p.product_create, p.product_update FROM products AS p JOIN category AS c ON c.id = p.category_id" + param1 + param2;
-            db.query(queryString, (err, data) => {
+            
+            const queryString = "SELECT p.id, p.product_name, p.product_description, p.product_price, c.category_name, p.product_rating, p.product_size, p.product_color, p.product_total, p.product_condition, p.product_create, p.product_update FROM products AS p JOIN category AS c ON c.id = p.category_id" + param1 + param2 + " LIMIT ? OFFSET ?" ;
+            db.query(queryString, [limit, offset, page], (err, data) => {
+                const newResult = {
+                    products: data,
+                    pageInfo: {
+                      currentPage: page,
+                      previousPage:
+                        page === 1 ? null : `/products?page=${page - 1}&limit=${limit}`,
+                      nextPage: page === limit !== data.length ?  null : `/products?page=${page + 1}&limit=${limit}`,
+                    },
+                  };
+                  
                 if (!err) {
-                    resolve(data);
+                    resolve(newResult);
                 } else {
                     reject(err);
                 }

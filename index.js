@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express"); // ambil dari node
 const mainRouter = require('./src/routes/index');
 

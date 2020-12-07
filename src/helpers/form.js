@@ -9,7 +9,7 @@ module.exports = {
     },
     error: (res, err) => {
         const resObject = {
-            message: 'Data Error',
+            message: err,
             status: 500,
             // error: err
         };

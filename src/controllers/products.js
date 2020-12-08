@@ -5,11 +5,12 @@ const form = require("../helpers/form");
 module.exports = {
     createProducts: (req, res) => {
         const { body } = req;
+        const level = req.decodeToken.level;
         const insertBody = {...body,
             product_create: new Date(Date.now()),
             product_update: new Date(Date.now()),
         };
-        productsModel.createProducts(insertBody).then((data) => {
+        productsModel.createProducts(insertBody, level).then((data) => {
                 const resProduct = {
                     id: data.insertId,
                     ...insertBody,
@@ -60,7 +61,8 @@ module.exports = {
 
     deleteProducts: (req, res) => {
         const { id } = req.params;
-        productsModel.deleteProducts(id).then((data) => {
+        const level = req.decodeToken.level;
+        productsModel.deleteProducts(id, level).then((data) => {
             if (data.affectedRows === 0) {
                 res.status(404).json({
                     msg: "Data Not Found",

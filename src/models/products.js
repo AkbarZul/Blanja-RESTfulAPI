@@ -2,10 +2,35 @@ const { query } = require("express");
 const db = require("../configs/mySQL");
 
 module.exports = {
-    createProducts: (insertBody) => {
+    createProducts: (insertBody, level) => {
         return new Promise((resolve, reject) => {
             const qs = "INSERT INTO products SET ?"
-            db.query(qs, insertBody, (err, data) => {
+            if (level > 1) {
+                reject({
+                    msg: "your level is small to create product",
+                    status: 401,
+                })
+            }
+            db.query(qs, [insertBody, level], (err, data) => {
+                if (!err) {
+                    resolve(data);
+                } else {
+                    reject(err);
+                }
+            });
+        });
+    },
+
+    deleteProducts: (id, level) => {
+        return new Promise((resolve, reject) => {
+            const queryString = "DELETE FROM products WHERE id = ?";
+            if (level > 1) {
+                reject({
+                    msg: "your level is small to delete product",
+                    status: 401,
+                })
+            }
+            db.query(queryString, [id, level], (err, data) => {
                 if (!err) {
                     resolve(data);
                 } else {
@@ -26,7 +51,7 @@ module.exports = {
                       currentPage: page,
                       previousPage:
                         page === 1 ? null : `/products?page=${page - 1}&limit=${limit}`,
-                      nextPage: page === limit !== data.length ?  null : `/products?page=${page + 1}&limit=${limit}`,
+                      nextPage: page === limit !== data.length && limit !== data.length ?  null : `/products?page=${page + 1}&limit=${limit}`,
                     },
                   };
                   
@@ -36,19 +61,6 @@ module.exports = {
                     reject(err);
                 }
 
-            });
-        });
-    },
-
-    deleteProducts: (id) => {
-        return new Promise((resolve, reject) => {
-            const queryString = "DELETE FROM products WHERE id = ?";
-            db.query(queryString, id, (err, data) => {
-                if (!err) {
-                    resolve(data);
-                } else {
-                    reject(err);
-                }
             });
         });
     },

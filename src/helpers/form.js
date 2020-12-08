@@ -10,7 +10,7 @@ module.exports = {
     error: (res, err) => {
         const resObject = {
             message: err,
-            status: 500,
+           
             // error: err
         };
         res.status(500).json(resObject);

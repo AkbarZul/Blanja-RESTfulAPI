@@ -20,7 +20,7 @@ module.exports = {
             const queryString = "UPDATE products SET ? WHERE ?";
             if (level > 1) {
                 reject({
-                    msg: "kamu bukan seller ngapain edit2 product ngaco",
+                    msg: "your level is small to edit product",
                     status: 401,
                 })
             }

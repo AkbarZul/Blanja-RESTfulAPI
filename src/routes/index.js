@@ -19,7 +19,7 @@ mainRouter.use("/", testRouter);
 mainRouter.use("/products", productsRouter);
 mainRouter.use("/category", categoryRouter);
 mainRouter.use("/product", checkToken , productRouter);
-mainRouter.use("/history", historyRouter);
+mainRouter.use("/history", checkToken , historyRouter);
 mainRouter.use("/search", searchRouter);
 mainRouter.use("/auth", authRouter);
 

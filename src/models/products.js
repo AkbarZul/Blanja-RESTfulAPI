@@ -10,14 +10,16 @@ module.exports = {
                     msg: "your level is small to create product",
                     status: 401,
                 })
+            } else {
+                db.query(qs, [insertBody, level], (err, data) => {
+                    if (!err) {
+                        resolve(data);
+                    } else {
+                        reject(err);
+                    }
+                });
             }
-            db.query(qs, [insertBody, level], (err, data) => {
-                if (!err) {
-                    resolve(data);
-                } else {
-                    reject(err);
-                }
-            });
+            
         });
     },
 
@@ -29,14 +31,16 @@ module.exports = {
                     msg: "your level is small to delete product",
                     status: 401,
                 })
+            } else {
+                db.query(queryString, [id, level], (err, data) => {
+                    if (!err) {
+                        resolve(data);
+                    } else {
+                        reject(err);
+                    }
+                });
             }
-            db.query(queryString, [id, level], (err, data) => {
-                if (!err) {
-                    resolve(data);
-                } else {
-                    reject(err);
-                }
-            });
+           
         });
     },
 
@@ -51,7 +55,7 @@ module.exports = {
                       currentPage: page,
                       previousPage:
                         page === 1 ? null : `/products?page=${page - 1}&limit=${limit}`,
-                      nextPage: page === limit !== data.length && limit !== data.length ?  null : `/products?page=${page + 1}&limit=${limit}`,
+                      nextPage: limit != data.length ? null : `/products?page=${page + 1}&limit=${limit}`,
                     },
                   };
                   

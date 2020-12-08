@@ -23,14 +23,16 @@ module.exports = {
                     msg: "your level is small to edit product",
                     status: 401,
                 })
+            } else {
+                db.query(queryString, [update, idBody, level], (err, data) => {
+                    if (!err) {
+                        resolve(data);
+                    } else {
+                        reject(err)
+                    }
+                });
             }
-            db.query(queryString, [update, idBody, level], (err, data) => {
-                if (!err) {
-                    resolve(data);
-                } else {
-                    reject(err)
-                }
-            });
+           
         });
     }
 }

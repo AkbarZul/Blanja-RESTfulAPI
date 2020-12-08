@@ -9,14 +9,16 @@ module.exports = {
                     msg: "your level is too high to create history",
                     status: 401,
                 })
+            } else {
+                db.query(qs, [insertHistory, level], (err, data) => {
+                    if (!err) {
+                        resolve(data);
+                    } else {
+                        reject(err);
+                    }
+                });
             }
-            db.query(qs, [insertHistory, level], (err, data) => {
-                if (!err) {
-                    resolve(data);
-                } else {
-                    reject(err);
-                }
-            });
+           
         });
     },
 
@@ -28,15 +30,17 @@ module.exports = {
                     msg: "your level is too high to read history",
                     status: 401,
                 })
+            } else {
+                db.query(queryString, level, (err, data) => {
+                    if (!err) {
+                        resolve(data);
+                    } else {
+                        reject(err);
+                    }
+    
+                });
             }
-            db.query(queryString, level, (err, data) => {
-                if (!err) {
-                    resolve(data);
-                } else {
-                    reject(err);
-                }
-
-            });
+           
         });
     }
 }

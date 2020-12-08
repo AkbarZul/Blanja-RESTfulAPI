@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const form = require("../form");
 
-module.exports = (req, res, next) => {
+module.exports =  (req, res, next) => {
     const bearerToken = req.header("x-access-token");
     if (!bearerToken) {
         form.error(res, {

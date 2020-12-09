@@ -7,7 +7,7 @@ module.exports = {
         const { body } = req;
         const level = req.decodeToken.level;
         const filepath = JSON.stringify(
-            req.files.map((e) => "/images" + e.filename)
+            req.files.map((e) => "/images" + "/" + e.filename + " ")
         )
         const insertBody = {...body,
             product_create: new Date(Date.now()),

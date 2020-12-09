@@ -55,8 +55,7 @@ module.exports = {
                       currentPage: page || 1,
                       previousPage:
                         page === 1 ? null : `/product?page=${page - 1}&limit=${limit}`,
-                      nextpage: page ===
-                        (data.length / limit) || page === limit
+                      nextpage: limit !== data.length
                           ? null
                           : `/product?page=${page + 1}&limit=${limit}`,
                     },

@@ -21,9 +21,11 @@ module.exports = {
         const { id } = req.body;
         const { body } = req;
         const level = req.decodeToken.level;
+        const singlePath = "/images/" + req.file.filename;
         const update = {
             ...body,
             product_update: new Date(Date.now()),
+            product_image: singlePath
         };
         const idBody = { id };
 

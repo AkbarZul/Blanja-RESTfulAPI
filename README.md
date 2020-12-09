@@ -150,5 +150,5 @@ npm i mysql
 * /products/delete/id
 
 #### Documentasi postman
-[click here](https://web.postman.co/collections/11874653-81339449-149c-47d0-bc13-9114ac3cdcb7?version=latest&workspace=a9e8c85d-3ab8-44c6-8a08-00d564783776)
+[click here](https://documenter.getpostman.com/view/11874653/TVmTbuVR#d0ea0e49-87fc-4cf5-9e32-64c11166b2e6)
 

@@ -6,11 +6,15 @@ module.exports = {
     createProducts: (req, res) => {
         const { body } = req;
         const level = req.decodeToken.level;
+        const filepath = JSON.stringify(
+            req.files.map((e) => "/images" + e.filename)
+        )
         const insertBody = {...body,
             product_create: new Date(Date.now()),
             product_update: new Date(Date.now()),
+            product_image: filepath,
         };
-        productsModel.createProducts(insertBody, level).then((data) => {
+        productsModel.createProducts(insertBody, level, filepath).then((data) => {
                 const resProduct = {
                     id: data.insertId,
                     ...insertBody,

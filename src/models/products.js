@@ -2,7 +2,7 @@ const { query } = require("express");
 const db = require("../configs/mySQL");
 
 module.exports = {
-    createProducts: (insertBody, level) => {
+    createProducts: (insertBody, level, filepath) => {
         return new Promise((resolve, reject) => {
             const qs = "INSERT INTO products SET ?"
             if (level > 1) {
@@ -11,7 +11,7 @@ module.exports = {
                     status: 401,
                 })
             } else {
-                db.query(qs, [insertBody, level], (err, data) => {
+                db.query(qs, [insertBody, level, filepath], (err, data) => {
                     if (!err) {
                         resolve(data);
                     } else {
@@ -47,15 +47,18 @@ module.exports = {
     readProducts: (param1, param2, limit, offset, page) => {
         return new Promise((resolve, reject) => {
             
-            const queryString = "SELECT p.id, p.product_name, p.product_description, p.product_price, c.category_name, p.product_rating, p.product_size, p.product_color, p.product_total, p.product_condition, p.product_create, p.product_update FROM products AS p JOIN category AS c ON c.id = p.category_id" + param1 + param2 + " LIMIT ? OFFSET ?" ;
+            const queryString = "SELECT p.id, p.product_name, p.product_description, p.product_price, c.category_name, p.product_rating, p.product_size, p.product_color, p.product_total, p.product_condition, p.product_create, p.product_image, p.product_update FROM products AS p JOIN category AS c ON c.id = p.category_id" + param1 + param2 + " LIMIT ? OFFSET ?" ;
             db.query(queryString, [limit, offset, page], (err, data) => {
                 const newResult = {
                     products: data,
                     pageInfo: {
-                      currentPage: page,
+                      currentPage: page || 1,
                       previousPage:
-                        page === 1 ? null : `/products?page=${page - 1}&limit=${limit}`,
-                      nextPage: limit != data.length ? null : `/products?page=${page + 1}&limit=${limit}`,
+                        page === 1 ? null : `/product?page=${page - 1}&limit=${limit}`,
+                      nextpage: page ===
+                        (data.length / limit) || page === limit
+                          ? null
+                          : `/product?page=${page + 1}&limit=${limit}`,
                     },
                   };
                   

@@ -11,7 +11,7 @@ const app = express()
 const port = 1000;
 
 const cors = require("cors");
-
+app.use(express.static("public"))
 app.use(cors());
 
 //sambung ke aplikasi express
